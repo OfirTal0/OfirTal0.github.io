@@ -14,7 +14,7 @@
 }
 
 .table {
-    border: solid 1px black;
+    border: solid 5px white;
     width: 90vw;
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -33,6 +33,7 @@
     height: 15vh;
     width: 10vw;
     font-weight: bold;
+    border-radius: 20px;
 
     &:hover {
         transition: all 0.5s;
@@ -50,7 +51,8 @@
     width: 10vw;
     font-weight: bold;
     font-size: xx-large;
-    color: red;
+    border-radius: 20px;
+
 
     &:hover {
         transition: all 0.5s;
@@ -60,4 +62,26 @@
 
 h1,h2,h3 {
     margin:5px;
+}
+
+.imglogo {
+    width: 50px;
+    height: 50px;
+}
+
+.button {
+    border:none;
+    color:white;
+    background-color: black;
+    padding:1%;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: larger;
+    border-radius: 20px;
+
+    &:hover {
+        transition: all 0.5s;
+        background-color: gray;
+        color: white;
+    }
+
 }
