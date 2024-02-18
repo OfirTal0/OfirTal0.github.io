@@ -77,6 +77,8 @@ h1,h2,h3 {
     font-family: 'Courier New', Courier, monospace;
     font-size: larger;
     border-radius: 20px;
+    padding:1%;
+
 
     &:hover {
         transition: all 0.5s;
