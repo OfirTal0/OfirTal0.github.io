@@ -31,7 +31,7 @@ function update() {
                 }, 200);
             }
         }
-    updateSquareWithDelay(14);
+    updateSquareWithDelay(0);
 
 } 
 
@@ -55,7 +55,7 @@ function CreateTable() {
         updateDate = JSON.parse(updateDate);
     }
     for (let i=1; i <= lastDayOfMonth; i++) {
-        if (i<=14) {
+        if (i<=updateDate.currentDay) {
             squres.push(<div className="squreX" key={i} id={`squre${i}`}>X</div>)  
         } else {
             squres.push(<div className="squre" key={i} id={`squre${i}`}>{i}</div>)  
