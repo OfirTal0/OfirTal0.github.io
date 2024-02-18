@@ -53,16 +53,18 @@ function CreateTable() {
     var updateDate= localStorage.getItem("update")
     if (updateDate) {
         updateDate = JSON.parse(updateDate);
-    }
-    for (let i=1; i <= lastDayOfMonth; i++) {
-        if (i<=updateDate.currentDay) {
-            squres.push(<div className="squreX" key={i} id={`squre${i}`}>X</div>)  
-        } else {
-            squres.push(<div className="squre" key={i} id={`squre${i}`}>{i}</div>)  
+        for (let i=1; i <= lastDayOfMonth; i++) {
+            if (i<=updateDate.currentDay) {
+                squres.push(<div className="squreX" key={i} id={`squre${i}`}>X</div>)  
+            } else {
+                squres.push(<div className="squre" key={i} id={`squre${i}`}>{i}</div>)  
+            }
+        }
+    } else {
+        for (let i = 1; i <= lastDayOfMonth; i++) {
+            squres.push(<div className="squre" key={i} id={`squre${i}`}>{i}</div>);
         }
     }
-
-
     return (
         <>
             <div className="table" id="table">
