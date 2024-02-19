@@ -4,18 +4,22 @@
     align-items: center;
     background-image: url('background.jpg');
     background-size: cover;
-    height: fit-content;
+    height: 130vh;
+    padding: 2%;
 }
-
 .info {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
+    gap:1em;
 }
+
+
 
 .table {
     border: solid 5px white;
-    width: 90vw;
+    width: 85vw;
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     grid-template-rows: repeat(4, 1fr);
@@ -60,14 +64,36 @@
     }
 }
 
+.endflight {
+    border: solid 1px white;
+    display: flex;
+    align-items: center;
+    background-image: URL("plan.jpg");
+    background-size: cover;
+    justify-content: center;
+    height: 15vh;
+    width: 10vw;
+    font-weight: bold;
+    border-radius: 20px;
+    color: white;
+
+    &:hover {
+        transition: all 0.5s;
+        background-color: rgba(81, 81, 81, 0.427);
+    }
+}
+
 h1,h2,h3 {
     margin:5px;
+    font-family: 'Courier New', Courier, monospace;
+
 }
 
 .imglogo {
     width: 50px;
     height: 50px;
 }
+
 
 .button {
     border:none;
@@ -78,7 +104,6 @@ h1,h2,h3 {
     font-size: larger;
     border-radius: 20px;
     padding:1%;
-
 
     &:hover {
         transition: all 0.5s;
@@ -94,7 +119,14 @@ h1,h2,h3 {
         grid-template-columns: repeat(auto-fit, minmax(20vw, 1fr));
     }
 
-    .squre, .squreX {
+    .squre, .squreX, .endflight  {
         width: 20vw;
+        height: 10vh;
+    }
+
+    .main {
+        height: 170vh;
+
     }
 }
+
