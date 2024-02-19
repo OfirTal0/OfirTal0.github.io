@@ -4,9 +4,11 @@
     align-items: center;
     background-image: url('background.jpg');
     background-size: cover;
-    height: 130vh;
+    height: fit-content;
     padding: 2%;
 }
+
+
 .info {
     display: flex;
     flex-direction: column;
@@ -15,6 +17,14 @@
     gap:1em;
 }
 
+.other {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap:1em;
+    height: 100vh;
+}
 
 
 .table {
