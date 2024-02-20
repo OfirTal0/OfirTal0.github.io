@@ -85,7 +85,7 @@ function CreateTable() {
     const UpdatedDaysLeft = localStorage.getItem("UpdatedDaysLeft");
     console.log(UpdatedDaysLeft)
     const daysLeft = Math.ceil((flightDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24));
-    const loopLimit = daysLeft - UpdatedDaysLeft;
+    const loopLimit = initalDaysLeft - UpdatedDaysLeft;
     
     if (UpdatedDaysLeft !== null || UpdatedDaysLeft !== undefined) {
             for (let i=0; i <= initalDaysLeft; i++) {
