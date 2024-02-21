@@ -1,70 +1,102 @@
-const currentDate = new Date();
-const currentDay = currentDate.getDate();
-const flightDate = new Date(localStorage.getItem("tripdate"));
+
 const imgArray = ["baggage.png","vacation.png","kebab.png", "watermelon.png","travel.png","ticket.png"];
 
-function update() {
-    const squaresToUpdate = [];
-    const flightDate = new Date(localStorage.getItem("tripdate"));
+
+function Main() {
+    return(
+        <div>
+            <Info/>
+            <Table/>
+        </div>
+    )
+}
+
+function Inputs() {
     const currentDate = new Date();
-    const daysLeft = Math.ceil((flightDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24));
-    const UpdatedDaysLeft = localStorage.getItem("UpdatedDaysLeft");
 
-    function updateSquareWithDelay(index) {
-        if (index < squaresToUpdate.length) {
-            const square = squaresToUpdate[index];
-            square.innerHTML = "";
-            const imgElement = document.createElement("img");
-            const randomIndex = Math.floor(Math.random() * imgArray.length);
-            imgElement.src = imgArray[randomIndex];
-            imgElement.className = "imglogo";
-            square.appendChild(imgElement);
-            square.className = "squreX";
-
-            setTimeout(() => {
-                updateSquareWithDelay(index + 1);
-            }, 300);
+    function saveInputs() {
+    let flightDateValue =document.getElementById("dateInput").value;
+    const flightDate = new Date(flightDateValue);
+    const InitialdDaysLeft = Math.ceil((flightDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24));
+        if (flightDate < currentDate) {
+                alert("Please select a future date")
         } else {
-            if (daysLeft === 0) {
-                main.render(<FlightArrived />);
-            }
+            localStorage.setItem("flightDate", flightDateValue);
+            localStorage.setItem("initalDaysLeft", InitialdDaysLeft);
+            main.render(<Main/>);
         }
     }
-
-    if (UpdatedDaysLeft == daysLeft) {
-        alert("No more days to update. Wait patiently for tomorrow");
-    }
-
-    if (UpdatedDaysLeft == null || UpdatedDaysLeft == undefined) {
-        localStorage.setItem("UpdatedDaysLeft", daysLeft);
-        let square = document.getElementById(`squre0`);
-        squaresToUpdate.push(square);
-        updateSquareWithDelay(0);
-    } else {
-        const loopLimit = daysLeft - UpdatedDaysLeft;
-        for (let i = 0; i <= loopLimit; i++) {
-            let square = document.getElementById(`squre${i}`);
-            if (square) {
-                squaresToUpdate.push(square);
-            }
-        }
-        localStorage.setItem("UpdatedDaysLeft", daysLeft);
-        updateSquareWithDelay(0);
-    }
+        return (
+            <>
+            <div className="other" id="info">
+                <h1>Desperation table</h1>
+                <h2>Select your trip date: </h2>
+                <input type="date" id="dateInput" />
+                <button onClick={saveInputs} className="button">Submit</button>
+            </div>
+            </>
+        ); 
 }
 
 function changeTripDate() {
-    localStorage.removeItem("tripdate");
-    localStorage.removeItem("UpdatedDaysLeft");
+    localStorage.removeItem("flightDate");
+    localStorage.removeItem("updatedDaysLeft");
     localStorage.removeItem("initalDaysLeft");
-
     window.location.reload();
 }
 
 function Info() {
-    const flightDate = new Date(localStorage.getItem("tripdate"));
+    const flightDate = new Date(localStorage.getItem("flightDate"));
     const currentDate = new Date();
-    const daysLeft = Math.ceil((flightDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24));
+    let daysLeft = Math.ceil((flightDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24));
+
+    function getSquers() {
+        const UpdatedDaysLeft = localStorage.getItem("updatedDaysLeft");
+
+        if (UpdatedDaysLeft == daysLeft) {
+            alert("No more days to update. Wait patiently for tomorrow");
+        } else if (daysLeft==0) {
+            main.render(<FlightArrived />);
+        } else {
+            const initalDaysLeft = localStorage.getItem("initalDaysLeft");
+            const squaresToUpdate = [];
+            for (let i = initalDaysLeft; i >= daysLeft; i--) {
+                let squre = document.getElementById(`squre${i}`)
+                squaresToUpdate.push(squre)
+            }
+            update(squaresToUpdate);
+        }
+
+    }
+
+    function update(squaresToUpdate) {
+        localStorage.setItem("updatedDaysLeft", daysLeft);
+        
+        const updateSquareWithDelay = (index) => {
+            if (index < squaresToUpdate.length) {
+                const key = squaresToUpdate[index];
+                const square = document.getElementById(`square${key}`);
+                if (square) {
+                    const imgElement = document.createElement("img");
+                    imgElement.className = "imglogo";
+                    imgElement.src = imgArray[Math.floor(Math.random() * imgArray.length)];
+        
+                    square.innerHTML = ""; 
+                    square.appendChild(imgElement);
+                    square.className = "squareX"; 
+
+                    setTimeout(() => {
+                        updateSquareWithDelay(index + 1);
+                    }, 300);  
+                }
+
+            }
+        };
+    
+        updateSquareWithDelay(0);
+        window.location.reload();
+
+    }
 
     return (
         <>
@@ -72,95 +104,58 @@ function Info() {
             <h1>Desperation table</h1>
             <button className="button" onClick={changeTripDate}>Change trip date</button>
             <h2> You have {daysLeft} days left until your trip </h2>
-            <button className="button" onClick={update}>Update days left</button>
+            <button className="button" onClick={getSquers}>Update days left</button>
         </div>
         </>
     ); 
 }
 
-function CreateTable() {
+
+function Table() {
     let squres = [] 
     const initalDaysLeft = localStorage.getItem("initalDaysLeft");
     parseInt(initalDaysLeft, 10)
-    const UpdatedDaysLeft = localStorage.getItem("UpdatedDaysLeft");
-    console.log(UpdatedDaysLeft)
-    const daysLeft = Math.ceil((flightDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24));
-    const loopLimit = initalDaysLeft - UpdatedDaysLeft;
-    
-    if (UpdatedDaysLeft !== null || UpdatedDaysLeft !== undefined) {
-            for (let i=0; i <= initalDaysLeft; i++) {
-                if (i==initalDaysLeft) {
-                    squres.push(<div className="endflight" key={i} id={`squre${i}`}>
-                        Flight
-                    </div>)  
-                }
-                else if (i<=loopLimit) {
-                    const randomIndex = Math.floor(Math.random() * imgArray.length);
-                    squres.push(<div className="squreX" key={i} id={`squre${i}`}>
-                    <img className="imglogo" src={imgArray[randomIndex]} />
-                    </div>)  
-                } else {
-                    squres.push(<div className="squre" key={i} id={`squre${i}`}>
-                    {initalDaysLeft-i}
-                    </div>)  
-                }
+    let updatedDaysLeft = localStorage.getItem("updatedDaysLeft");
+    for (let i=0; i <= initalDaysLeft; i++) {
+        let dayMark = initalDaysLeft-i;
+        let looplimit= initalDaysLeft - updatedDaysLeft;
+        if (updatedDaysLeft !== null && updatedDaysLeft !== undefined) {
+            if (dayMark == 0) {
+                squres.push(<div className="endflight" key={dayMark} id={`squre${dayMark}`}>
+                Flight
+                </div>) 
+            } else if(i <= looplimit ) {
+                const randomIndex = Math.floor(Math.random() * imgArray.length);
+                squres.push(<div className="squreX" key={dayMark} id={`squre${dayMark}`}>
+                <img className="imglogo" src={imgArray[randomIndex]} />
+                </div>) 
+            } else {
+                squres.push(<div className="squre" key={dayMark} id={`squre${dayMark}`}>
+                {dayMark}
+                </div>)
             }
         } else {
-                for (let i = 0; i <= initalDaysLeft; i++) {
-                    if (i==initalDaysLeft) {
-                        squres.push(<div className="endflight" key={i} id={`squre${i}`}>
-                        Flight
-                        </div>)  
-                    } else {
-                        squres.push(<div className="squre" key={i} id={`squre${i}`}>{initalDaysLeft-i}</div>);
-
-                    }
+            if (dayMark == 0) {
+                squres.push(<div className="endflight" key={dayMark} id={`squre${dayMark}`}>
+                Flight
+                </div>) 
+            } else {
+                squres.push(<div className="squre" key={dayMark} id={`squre${dayMark}`}>
+                {dayMark}
+                </div>)
             }
         }
-
-
+    }
     return (
         <>
             <div className="table" id="table">
             {squres}
             </div>
         </>
-    );
+    )
+ }
 
-}
-
-
-function Inputs() {
-    function saveInputs() {
-
-        const tripdate = document.getElementById("dateInput").value;
-        const selectedDate = new Date(tripdate);
-        const currentDate = new Date();
-        const InitialdDaysLeft = Math.ceil((selectedDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24));
-
-        if (selectedDate < currentDate) {
-                alert("Please select a future date")
-        } else {
-            localStorage.setItem("tripdate", tripdate);
-            localStorage.setItem("initalDaysLeft", InitialdDaysLeft);
-
-            main.render(<Main/>);
-        }
-    }
-
-    return (
-        <>
-        <div className="other" id="info">
-            <h1>Desperation table</h1>
-            <h2>Select your trip date: </h2>
-            <input type="date" id="dateInput" />
-            <button onClick={saveInputs} className="button">Submit</button>
-        </div>
-        </>
-    ); 
-}
-
-function FlightArrived() {
+ function FlightArrived() {
     const mainDiv = document.getElementById("main")
     mainDiv.style.backgroundImage = "url('plan.jpg')"    
     return (
@@ -177,20 +172,12 @@ function FlightArrived() {
     )
 }
 
-
-function Main() {
-    return(
-        <div>
-            <Info/>
-            <CreateTable/>
-        </div>
-    )
-}
-
+const flightDateValue = localStorage.getItem("flightDate");
 const main = ReactDOM.createRoot(document.getElementById("main"));
 
-if (flightDate.toISOString().split('T')[0] !== "1970-01-01") {
-    main.render(<Main/>);
-} else {
-    main.render(<Inputs />);
-}
+if (flightDateValue == null && flightDateValue == undefined) {
+        main.render(<Inputs />);
+    } else {
+        main.render(<Main />);
+}  
+
