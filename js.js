@@ -29,7 +29,7 @@ function Inputs() {
         return (
             <>
             <div className="other" id="info">
-                <h1>Desperation table</h1>
+                <h1>Flight Countdown App</h1>
                 <h2>Select your trip date: </h2>
                 <input type="date" id="dateInput" />
                 <button onClick={saveInputs} className="button">Submit</button>
@@ -101,7 +101,7 @@ function Info() {
     return (
         <>
         <div className="info" id="info">
-            <h1>Desperation table</h1>
+            <h1>Flight Countdown App</h1>
             <button className="button" onClick={changeTripDate}>Change trip date</button>
             <h2> You have {daysLeft} days left until your trip </h2>
             <button className="button" onClick={getSquers}>Update days left</button>
